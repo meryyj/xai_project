@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import argparse
 import logging
+import shutil
 from pathlib import Path
 
+import matplotlib.pyplot as plt
 import pandas as pd
 import torch
 
@@ -30,6 +32,19 @@ from src.utils.logging import setup_logging
 from src.utils.seed import set_seed
 
 logger = logging.getLogger("compare_xai")
+
+
+METHOD_DISPLAY_NAMES = {
+    "gradcam": "Grad-CAM",
+    "lime": "LIME",
+    "shap": "SHAP",
+}
+
+REGION_DISPLAY_NAMES = {
+    "eyes": "Eyes",
+    "mouth": "Mouth",
+    "background": "Background",
+}
 
 
 def parse_args() -> argparse.Namespace:
@@ -145,6 +160,228 @@ def _write_markdown_report(
             f.write("\n")
 
 
+def _display_method_name(method: str) -> str:
+    return METHOD_DISPLAY_NAMES.get(str(method).lower(), str(method))
+
+
+def _display_region_name(region: str) -> str:
+    return REGION_DISPLAY_NAMES.get(str(region).lower(), str(region))
+
+
+def _plot_grouped_bars(
+    ax,
+    df: pd.DataFrame,
+    metrics: list[str],
+    labels: list[str],
+    title: str,
+    ylabel: str,
+) -> None:
+    positions = list(range(len(df)))
+    width = 0.8 / max(len(metrics), 1)
+    colors = ["#2563EB", "#F97316", "#16A34A", "#A855F7", "#DC2626"]
+    group_offset = (len(metrics) - 1) * width / 2
+
+    for metric_idx, (metric, label) in enumerate(zip(metrics, labels)):
+        offsets = [pos - group_offset + metric_idx * width for pos in positions]
+        values = df[metric].astype(float).tolist()
+        bars = ax.bar(
+            offsets,
+            values,
+            width=width,
+            label=label,
+            color=colors[metric_idx % len(colors)],
+            alpha=0.88,
+        )
+        for bar in bars:
+            value = float(bar.get_height())
+            text_offset = 3 if value >= 0 else -11
+            ax.annotate(
+                f"{value:.2f}",
+                xy=(bar.get_x() + bar.get_width() / 2, value),
+                xytext=(0, text_offset),
+                textcoords="offset points",
+                ha="center",
+                va="bottom" if value >= 0 else "top",
+                fontsize=8,
+            )
+
+    ax.set_title(title, fontsize=12, fontweight="bold")
+    ax.set_ylabel(ylabel)
+    ax.set_xticks(positions)
+    ax.set_xticklabels(df["display_name"].tolist(), rotation=0)
+    ax.axhline(0, color="#111827", linewidth=0.8)
+    ax.grid(axis="y", linestyle="--", alpha=0.25)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.legend(frameon=False, fontsize=9)
+
+
+def _save_summary_plots(
+    output_dir: Path,
+    summary_df: pd.DataFrame,
+    masking_summary_df: pd.DataFrame,
+) -> None:
+    if not summary_df.empty:
+        plot_df = summary_df.copy()
+        plot_df["display_name"] = plot_df["method"].map(_display_method_name)
+
+        fig, axes = plt.subplots(1, 2, figsize=(13, 4.8))
+        _plot_grouped_bars(
+            axes[0],
+            plot_df,
+            ["deletion_auc", "insertion_auc"],
+            ["Deletion AUC", "Insertion AUC"],
+            "Faithfulness metrics",
+            "AUC",
+        )
+        axes[0].text(
+            0.5,
+            -0.20,
+            "Lower deletion AUC is better; higher insertion AUC is better.",
+            transform=axes[0].transAxes,
+            ha="center",
+            fontsize=9,
+            color="#374151",
+        )
+
+        _plot_grouped_bars(
+            axes[1],
+            plot_df,
+            [
+                "robustness_pearson_mean",
+                "robustness_rank_corr_mean",
+                "robustness_topk_iou_mean",
+            ],
+            ["Pearson", "Rank corr.", "Top-k IoU"],
+            "Robustness under perturbations",
+            "Score",
+        )
+        axes[1].set_ylim(bottom=min(0.0, axes[1].get_ylim()[0]), top=1.05)
+
+        fig.suptitle("XAI method comparison", fontsize=15, fontweight="bold")
+        fig.tight_layout(rect=[0, 0.04, 1, 0.94])
+        fig.savefig(output_dir / "xai_method_summary.png", dpi=300, bbox_inches="tight")
+        plt.close(fig)
+
+    if not masking_summary_df.empty:
+        region_order = [
+            region
+            for region in ["eyes", "mouth", "background"]
+            if region in set(masking_summary_df["region"].astype(str))
+        ]
+
+        impact_df = (
+            masking_summary_df.groupby("region", as_index=False)[
+                ["confidence_drop", "prediction_changed"]
+            ]
+            .mean()
+            .set_index("region")
+            .loc[region_order]
+            .reset_index()
+        )
+        impact_df["display_name"] = impact_df["region"].map(_display_region_name)
+
+        mass_df = masking_summary_df.copy()
+        mass_df["display_name"] = mass_df["method"].map(_display_method_name)
+        mass_metrics = [f"mass_{region}" for region in region_order]
+        for region, metric_name in zip(region_order, mass_metrics):
+            mass_df[metric_name] = mass_df.apply(
+                lambda row, region=region: row["attribution_mass"]
+                if str(row["region"]) == region
+                else pd.NA,
+                axis=1,
+            )
+        mass_df = (
+            mass_df.groupby(["method", "display_name"], as_index=False)[mass_metrics]
+            .max()
+            .sort_values("method")
+        )
+
+        fig, axes = plt.subplots(1, 2, figsize=(13, 4.8))
+        _plot_grouped_bars(
+            axes[0],
+            impact_df,
+            ["confidence_drop", "prediction_changed"],
+            ["Confidence drop", "Prediction changed"],
+            "Region masking impact",
+            "Mean score",
+        )
+        _plot_grouped_bars(
+            axes[1],
+            mass_df,
+            mass_metrics,
+            [_display_region_name(region) for region in region_order],
+            "Attribution mass by region",
+            "Mean attribution mass",
+        )
+        axes[0].set_ylim(top=max(0.65, axes[0].get_ylim()[1]))
+        axes[1].set_ylim(bottom=0.0, top=max(0.65, axes[1].get_ylim()[1]))
+
+        fig.suptitle("Facial-region masking analysis", fontsize=15, fontweight="bold")
+        fig.tight_layout(rect=[0, 0.04, 1, 0.94])
+        fig.savefig(output_dir / "masking_summary.png", dpi=300, bbox_inches="tight")
+        plt.close(fig)
+
+
+def _sample_output_dir(output_dir: Path, row: pd.Series) -> Path:
+    return output_dir / "samples" / (
+        f"idx_{int(row['sample_idx']):04d}_true_{row['true_label_name']}"
+        f"_pred_{row['predicted_label_name']}"
+    )
+
+
+def _copy_if_exists(source: Path, destination: Path) -> bool:
+    if not source.is_file():
+        return False
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, destination)
+    return True
+
+
+def _prepare_report_figures(output_dir: Path, selected_df: pd.DataFrame) -> None:
+    report_dir = output_dir / "report_figures"
+    report_dir.mkdir(parents=True, exist_ok=True)
+
+    _copy_if_exists(output_dir / "xai_method_summary.png", report_dir / "xai_method_summary.png")
+    _copy_if_exists(output_dir / "masking_summary.png", report_dir / "masking_summary.png")
+
+    confusion_candidates = [
+        Path("experiments/evaluation/main_cnn_150epochs/confusion/test_confusion_normalized_true.png"),
+        Path("experiments/evaluation/main_cnn_20epochs/confusion/test_confusion_normalized_true.png"),
+    ]
+    for candidate in confusion_candidates:
+        if _copy_if_exists(candidate, report_dir / "confusion_matrix_normalized.png"):
+            break
+
+    if selected_df.empty:
+        return
+
+    for sample_idx, filename in {
+        4190: "example_correct_happy_happy.png",
+        449: "example_incorrect_anger_happy.png",
+    }.items():
+        rows = selected_df[selected_df["sample_idx"].astype(int) == sample_idx]
+        if rows.empty:
+            continue
+        source = _sample_output_dir(output_dir, rows.iloc[0]) / "qualitative_comparison.png"
+        _copy_if_exists(source, report_dir / filename)
+
+    correct_rows = selected_df[selected_df["correct"].astype(int) == 1].sort_values(
+        "predicted_confidence",
+        ascending=False,
+    )
+    incorrect_rows = selected_df[selected_df["correct"].astype(int) == 0].sort_values(
+        "predicted_confidence",
+        ascending=False,
+    )
+    if not correct_rows.empty:
+        source = _sample_output_dir(output_dir, correct_rows.iloc[0]) / "qualitative_comparison.png"
+        _copy_if_exists(source, report_dir / "best_correct_example.png")
+    if not incorrect_rows.empty:
+        source = _sample_output_dir(output_dir, incorrect_rows.iloc[0]) / "qualitative_comparison.png"
+        _copy_if_exists(source, report_dir / "best_incorrect_example.png")
+
+
 def main() -> None:
     args = parse_args()
     output_dir = Path(args.output_dir)
@@ -166,6 +403,7 @@ def main() -> None:
 
     model = build_model_from_config(cfg_dict).to(device)
     checkpoint = restore_model_from_checkpoint(model, args.checkpoint, device)
+    model.eval()
     logger.info(
         f"Loaded checkpoint from epoch {checkpoint.get('epoch', 'unknown')} "
         f"with keys: {sorted(checkpoint.keys())}"
@@ -178,7 +416,7 @@ def main() -> None:
         dataset,
         device,
         batch_size=int(xai_cfg.get("prediction_batch_size", 32)),
-        num_workers=int(cfg_dict.get("training", {}).get("num_workers", 0)),
+        num_workers=int(xai_cfg.get("prediction_num_workers", 0)),
     )
 
     samples_per_class = (
@@ -241,8 +479,11 @@ def main() -> None:
                 cfg_dict,
                 sample_dir / f"{method_name}_explanation.png",
                 title=(
-                    f"{method_name} | true={EMOTION_LABELS[int(true_label)]} | "
-                    f"pred={EMOTION_LABELS[result.predicted_class]} ({result.confidence:.2%})"
+                    f"{_display_method_name(method_name)} | "
+                    f"true={EMOTION_LABELS[int(true_label)]} | "
+                    f"predicted={EMOTION_LABELS[result.predicted_class]} | "
+                    f"target={EMOTION_LABELS[result.target_class]} | "
+                    f"p_target={result.confidence:.2%}"
                 ),
             )
 
@@ -327,6 +568,9 @@ def main() -> None:
             cfg_dict,
             qualitative_results,
             sample_dir / "qualitative_comparison.png",
+            true_label=int(true_label),
+            predicted_label=predicted_label,
+            predicted_confidence=predicted_confidence,
         )
 
     per_sample_df = pd.DataFrame(sample_rows)
@@ -367,6 +611,8 @@ def main() -> None:
         )
         masking_summary_df.to_csv(output_dir / "xai_masking_summary.csv", index=False)
 
+    _save_summary_plots(output_dir, summary_df, masking_summary_df)
+    _prepare_report_figures(output_dir, selected_df)
     _write_markdown_report(output_dir, summary_df, masking_summary_df)
     logger.info(f"XAI comparison complete. Outputs saved to: {output_dir}")
 

@@ -1,0 +1,8 @@
+sample_idx,true_label,true_label_name,predicted_label,predicted_label_name,predicted_confidence,correct
+449,6,anger,1,happy,0.7803096175193787,0
+483,0,neutral,0,neutral,0.29063165187835693,1
+2162,3,surprise,3,surprise,0.8867216110229492,1
+2351,4,fear,4,fear,0.35208001732826233,1
+3446,2,sad,3,surprise,0.42576050758361816,0
+4190,1,happy,1,happy,0.9864829182624817,1
+4641,5,disgust,6,anger,0.4803128242492676,0

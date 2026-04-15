@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 from src.evaluation.xai_common import make_baseline_tensor, normalize_map, predict_probabilities
 
@@ -71,6 +72,21 @@ def compute_faithfulness(
     )
 
     importance_map = normalize_map(importance_map)
+    target_hw = tuple(image_tensor.shape[-2:])
+    if importance_map.shape != target_hw:
+        importance_map_tensor = torch.from_numpy(importance_map).float().view(1, 1, *importance_map.shape)
+        importance_map = (
+            F.interpolate(
+                importance_map_tensor,
+                size=target_hw,
+                mode="bilinear",
+                align_corners=False,
+            )
+            .squeeze()
+            .numpy()
+        )
+        importance_map = normalize_map(importance_map)
+
     fractions = np.linspace(0.0, 1.0, steps + 1)
     deletion_batch = []
     insertion_batch = []

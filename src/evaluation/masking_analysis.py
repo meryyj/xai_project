@@ -5,6 +5,7 @@ from typing import Any, Dict, Sequence
 import numpy as np
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 from src.evaluation.xai_common import make_baseline_tensor, normalize_map, predict_probabilities
 
@@ -72,6 +73,21 @@ def analyze_masking(
 
     region_masks = build_template_region_masks(image_tensor.shape[1], image_tensor.shape[2])
     heatmap = normalize_map(heatmap)
+    target_hw = tuple(image_tensor.shape[-2:])
+    if heatmap.shape != target_hw:
+        heatmap_tensor = torch.from_numpy(heatmap).float().view(1, 1, *heatmap.shape)
+        heatmap = (
+            F.interpolate(
+                heatmap_tensor,
+                size=target_hw,
+                mode="bilinear",
+                align_corners=False,
+            )
+            .squeeze()
+            .numpy()
+        )
+        heatmap = normalize_map(heatmap)
+
     total_attr = float(heatmap.sum()) if float(heatmap.sum()) > 0 else 1.0
 
     rows = []

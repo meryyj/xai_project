@@ -64,6 +64,7 @@ def predict_probabilities(
     inputs: torch.Tensor,
     device: torch.device,
 ) -> torch.Tensor:
+    model.eval()
     if inputs.ndim == 3:
         inputs = inputs.unsqueeze(0)
     with torch.no_grad():
@@ -189,8 +190,17 @@ def save_explanation_figure(
 
     fig.suptitle(title)
     fig.tight_layout()
-    fig.savefig(output_path, dpi=150, bbox_inches="tight")
+    fig.savefig(output_path, dpi=250, bbox_inches="tight")
     plt.close(fig)
+
+
+def _display_method_name(method: str) -> str:
+    display_names = {
+        "gradcam": "Grad-CAM",
+        "lime": "LIME",
+        "shap": "SHAP",
+    }
+    return display_names.get(method.lower(), method)
 
 
 def save_method_comparison_figure(
@@ -198,16 +208,20 @@ def save_method_comparison_figure(
     cfg: Dict[str, Any],
     results: list[ExplanationResult],
     output_path: str | Path,
+    *,
+    true_label: int | None = None,
+    predicted_label: int | None = None,
+    predicted_confidence: float | None = None,
 ) -> None:
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     image = tensor_to_display_image(image_tensor, cfg)
     n_cols = len(results) + 1
-    fig, axes = plt.subplots(1, n_cols, figsize=(4 * n_cols, 4.5))
+    fig, axes = plt.subplots(1, n_cols, figsize=(4.6 * n_cols, 5.2))
 
     axes[0].imshow(image)
-    axes[0].set_title("Input")
+    axes[0].set_title("Input image", fontsize=12, fontweight="bold")
     axes[0].axis("off")
 
     for idx, result in enumerate(results, start=1):
@@ -218,12 +232,39 @@ def save_method_comparison_figure(
         )
         axes[idx].imshow(overlay)
         axes[idx].set_title(
-            f"{result.method}\n{EMOTION_LABELS[result.predicted_class]} ({result.confidence:.2%})"
+            f"{_display_method_name(result.method)}\n"
+            f"target: {EMOTION_LABELS[result.target_class]}\n"
+            f"p={result.confidence:.2%}",
+            fontsize=12,
+            fontweight="bold",
         )
         axes[idx].axis("off")
 
-    fig.tight_layout()
-    fig.savefig(output_path, dpi=150, bbox_inches="tight")
+    if true_label is not None and predicted_label is not None:
+        is_correct = int(true_label) == int(predicted_label)
+        status = "correct" if is_correct else "incorrect"
+        confidence_text = (
+            f" | p(pred)={predicted_confidence:.2%}"
+            if predicted_confidence is not None
+            else ""
+        )
+        title = (
+            f"true: {EMOTION_LABELS[int(true_label)]} | "
+            f"predicted: {EMOTION_LABELS[int(predicted_label)]}"
+            f"{confidence_text} | {status}"
+        )
+        title_artist = fig.suptitle(title, fontsize=14, fontweight="bold", y=0.98)
+        title_artist.set_bbox(
+            {
+                "facecolor": "#E8F5E9" if is_correct else "#FDECEC",
+                "edgecolor": "#2E7D32" if is_correct else "#C62828",
+                "boxstyle": "round,pad=0.35",
+                "linewidth": 1.0,
+            }
+        )
+
+    fig.tight_layout(rect=[0, 0, 1, 0.92])
+    fig.savefig(output_path, dpi=300, bbox_inches="tight")
     plt.close(fig)
 
 
