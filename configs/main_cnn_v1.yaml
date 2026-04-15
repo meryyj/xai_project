@@ -1,0 +1,68 @@
+seed: 42
+
+dataset:
+  name: RAFDB
+  root: data/processed
+  splits_dir: data/splits
+  image_size: 128
+  channels: 1         # grayscale (what you chose)
+  train_split: train.csv
+  val_split: val.csv
+  test_split: test.csv
+
+preprocessing:
+  normalize:
+    mean: [0.5]
+    std: [0.5]
+  use_hist_equalization: false
+
+augmentation:
+  horizontal_flip: true
+  rotation_deg: 15
+  translate: 0.1
+  brightness: 0.2
+  contrast: 0.2
+  saturation: 0.0
+  hue: 0.0
+  random_erasing: true
+  random_erasing_p: 0.5
+  random_erasing_scale: [0.02, 0.33]
+  random_erasing_ratio: [0.3, 3.3]
+
+model:
+  name: main_cnn_v1
+  in_channels: 1           # will be overridden from dataset.channels if present
+  num_classes: 7
+  base_channels: 32        # 32 → 64 → 128 → 256
+  num_blocks: 4
+  use_depthwise: true      # depthwise separable convolutions
+  use_residual: true
+  attention_type: "se"     # "none", "se", or "cbam"
+  activation: "elu"        # "relu", "elu", "leaky_relu"
+  dropout_block: 0.25      # dropout after each block
+  hidden_dim: 256          # size of FC layer before final logits
+  dropout_head: 0.4        # dropout in head
+
+training:
+  batch_size: 64
+  num_epochs: 150
+  num_workers: 4
+  pin_memory: true
+  early_stopping_patience: 15
+
+optimizer:
+  name: adamw
+  lr: 0.001
+  weight_decay: 0.0001
+  momentum: 0.9
+
+scheduler:
+  name: cosine_annealing
+  T_max: 50
+  eta_min: 1.0e-05
+
+logging:
+  log_dir: experiments/logs
+  checkpoint_dir: experiments/checkpoints
+  save_best_metric: val_macro_f1
+  tensorboard: true

@@ -1,0 +1,55 @@
+seed: 42
+
+dataset:
+  name: "RAFDB"
+  root: "data/processed"      # where your processed/aligned images will live
+  splits_dir: "data/splits"   # where train/val/test csv files will live
+  image_size: 128
+  channels: 1                 # <-- grayscale, as you preferred
+  train_split: "train.csv"
+  val_split: "val.csv"
+  test_split: "test.csv"
+
+preprocessing:
+  normalize:
+    # for grayscale, a single mean/std is fine; we can refine once we compute dataset stats
+    mean: [0.5]
+    std: [0.5]
+  use_hist_equalization: false
+
+augmentation:
+  horizontal_flip: true
+  rotation_deg: 15
+  translate: 0.1             # as a fraction of image size (10%)
+  brightness: 0.2
+  contrast: 0.2
+  saturation: 0.0            # no effect on grayscale, but harmless
+  hue: 0.0
+  random_erasing: true
+  random_erasing_p: 0.5
+  random_erasing_scale: [0.02, 0.33]
+  random_erasing_ratio: [0.3, 3.3]
+
+training:
+  batch_size: 64
+  num_epochs: 150
+  num_workers: 4
+  pin_memory: true
+  early_stopping_patience: 15
+
+optimizer:
+  name: "adamw"
+  lr: 0.001
+  weight_decay: 0.0001
+  momentum: 0.9   # used if you switch to SGD later
+
+scheduler:
+  name: "cosine_annealing"
+  T_max: 50
+  eta_min: 1.0e-5
+
+logging:
+  log_dir: "experiments/logs"
+  checkpoint_dir: "experiments/checkpoints"
+  save_best_metric: "val_macro_f1"
+  tensorboard: true

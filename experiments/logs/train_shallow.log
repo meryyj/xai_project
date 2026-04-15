@@ -1,0 +1,54 @@
+2025-11-25 10:45:37,863 | root | INFO | Logging initialized. Writing to: experiments\logs\train_shallow.log
+2025-11-25 10:45:37,864 | train_shallow | INFO | Loading config from: configs/main_cnn_template.yaml
+2025-11-25 10:45:37,867 | src.utils.seed | INFO | Setting global seed to 42
+2025-11-25 10:45:37,874 | src.utils.seed | INFO | PyTorch cuDNN set to deterministic mode
+2025-11-25 10:45:37,874 | train_shallow | INFO | Seed set to 42
+2025-11-25 10:45:37,874 | train_shallow | INFO | Using device: cuda
+2025-11-25 10:45:39,153 | train_shallow | INFO | ShallowCNN:
+ShallowCNN(
+  (features): Sequential(
+    (0): Conv2d(1, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU(inplace=True)
+    (3): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (4): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (5): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (6): ReLU(inplace=True)
+    (7): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (8): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (9): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (10): ReLU(inplace=True)
+    (11): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  )
+  (classifier): Sequential(
+    (0): Flatten(start_dim=1, end_dim=-1)
+    (1): Linear(in_features=32768, out_features=128, bias=True)
+    (2): ReLU(inplace=True)
+    (3): Dropout(p=0.5, inplace=False)
+    (4): Linear(in_features=128, out_features=7, bias=True)
+  )
+)
+2025-11-25 10:45:39,153 | train_shallow | INFO | Computing class weights from training set...
+2025-11-25 10:46:04,528 | train_shallow | INFO | Class counts-derived weights: [0.827241063117981, 0.5703387260437012, 0.8435758352279663, 1.281175136566162, 1.0009962320327759, 9.369638442993164, 1.0350652933120728]
+2025-11-25 10:46:04,530 | train_shallow | INFO | Using Adam optimizer (lr=0.001, weight_decay=0.0001)
+2025-11-25 10:46:04,530 | train_shallow | INFO | Starting training for 20 epochs (early stopping patience=15)
+2025-11-25 10:46:50,977 | train_shallow | INFO | Epoch 001/20 | Train: loss=2.2923, acc=0.1879, macroF1=0.1192 | Val: loss=1.9453, acc=0.2504, macroF1=0.0572
+2025-11-25 10:46:51,003 | train_shallow | INFO | New best val_macro_f1=0.0572 at epoch 1, checkpoint saved to experiments\checkpoints\shallow_best.pt
+2025-11-25 10:47:35,852 | train_shallow | INFO | Epoch 002/20 | Train: loss=1.9454, acc=0.2365, macroF1=0.0736 | Val: loss=1.9450, acc=0.2504, macroF1=0.0572
+2025-11-25 10:48:21,070 | train_shallow | INFO | Epoch 003/20 | Train: loss=1.9454, acc=0.1980, macroF1=0.0797 | Val: loss=1.9449, acc=0.2504, macroF1=0.0572
+2025-11-25 10:49:06,258 | train_shallow | INFO | Epoch 004/20 | Train: loss=1.9452, acc=0.2331, macroF1=0.0872 | Val: loss=1.9448, acc=0.1692, macroF1=0.0414
+2025-11-25 10:49:51,010 | train_shallow | INFO | Epoch 005/20 | Train: loss=1.9450, acc=0.2193, macroF1=0.1025 | Val: loss=1.9448, acc=0.2504, macroF1=0.0572
+2025-11-25 10:50:36,149 | train_shallow | INFO | Epoch 006/20 | Train: loss=1.9453, acc=0.2008, macroF1=0.0947 | Val: loss=1.9448, acc=0.2504, macroF1=0.0572
+2025-11-25 10:51:21,429 | train_shallow | INFO | Epoch 007/20 | Train: loss=1.9452, acc=0.2176, macroF1=0.0951 | Val: loss=1.9448, acc=0.1692, macroF1=0.0414
+2025-11-25 10:52:06,210 | train_shallow | INFO | Epoch 008/20 | Train: loss=1.9452, acc=0.1840, macroF1=0.1201 | Val: loss=1.9448, acc=0.1692, macroF1=0.0414
+2025-11-25 10:52:51,178 | train_shallow | INFO | Epoch 009/20 | Train: loss=1.9452, acc=0.1970, macroF1=0.1142 | Val: loss=1.9448, acc=0.1427, macroF1=0.0357
+2025-11-25 10:53:36,393 | train_shallow | INFO | Epoch 010/20 | Train: loss=1.9451, acc=0.1595, macroF1=0.0845 | Val: loss=1.9448, acc=0.2504, macroF1=0.0572
+2025-11-25 10:54:21,534 | train_shallow | INFO | Epoch 011/20 | Train: loss=1.9460, acc=0.2178, macroF1=0.0842 | Val: loss=1.9448, acc=0.1728, macroF1=0.0421
+2025-11-25 10:55:06,555 | train_shallow | INFO | Epoch 012/20 | Train: loss=1.9453, acc=0.1960, macroF1=0.1063 | Val: loss=1.9448, acc=0.1692, macroF1=0.0414
+2025-11-25 10:55:51,316 | train_shallow | INFO | Epoch 013/20 | Train: loss=1.9450, acc=0.2088, macroF1=0.0978 | Val: loss=1.9448, acc=0.1689, macroF1=0.0413
+2025-11-25 10:56:36,834 | train_shallow | INFO | Epoch 014/20 | Train: loss=1.9453, acc=0.1962, macroF1=0.1181 | Val: loss=1.9448, acc=0.2504, macroF1=0.0572
+2025-11-25 10:57:22,217 | train_shallow | INFO | Epoch 015/20 | Train: loss=1.9453, acc=0.1678, macroF1=0.0944 | Val: loss=1.9448, acc=0.2499, macroF1=0.0571
+2025-11-25 10:58:07,011 | train_shallow | INFO | Epoch 016/20 | Train: loss=1.9451, acc=0.2256, macroF1=0.0928 | Val: loss=1.9448, acc=0.2504, macroF1=0.0572
+2025-11-25 10:58:07,011 | train_shallow | INFO | Early stopping triggered after 16 epochs (no improvement for 15 epochs).
+2025-11-25 10:58:07,012 | train_shallow | INFO | Loading best checkpoint from experiments\checkpoints\shallow_best.pt for TEST evaluation.
+2025-11-25 10:58:23,489 | train_shallow | INFO | [TEST] loss=1.9454, acc=0.2506, macroF1=0.0572

@@ -1,0 +1,286 @@
+2025-11-23 18:04:35 | sanity | INFO | Loaded config from: configs\main_cnn_template.yaml
+2025-11-23 18:04:36 | sanity | INFO | Config content:
+{}
+
+2025-11-23 18:04:36 | sanity | INFO | Sanity check completed successfully.
+2025-11-23 21:08:59 | sanity | INFO | Loaded config from: configs\main_cnn_template.yaml
+2025-11-23 21:08:59 | sanity | INFO | Config content:
+seed: 42
+dataset:
+  name: RAFDB
+  root: data/processed
+  splits_dir: data/splits
+  image_size: 128
+  channels: 1
+  train_split: train.csv
+  val_split: val.csv
+  test_split: test.csv
+preprocessing:
+  normalize:
+    mean:
+    - 0.5
+    std:
+    - 0.5
+  use_hist_equalization: false
+augmentation:
+  horizontal_flip: true
+  rotation_deg: 15
+  translate: 0.1
+  brightness: 0.2
+  contrast: 0.2
+  saturation: 0.0
+  hue: 0.0
+  random_erasing: true
+  random_erasing_p: 0.5
+  random_erasing_scale:
+  - 0.02
+  - 0.33
+  random_erasing_ratio:
+  - 0.3
+  - 3.3
+training:
+  batch_size: 64
+  num_epochs: 150
+  num_workers: 4
+  pin_memory: true
+  early_stopping_patience: 15
+optimizer:
+  name: adamw
+  lr: 0.001
+  weight_decay: 0.0001
+  momentum: 0.9
+scheduler:
+  name: cosine_annealing
+  T_max: 50
+  eta_min: 1.0e-05
+logging:
+  log_dir: experiments/logs
+  checkpoint_dir: experiments/checkpoints
+  save_best_metric: val_macro_f1
+  tensorboard: true
+
+2025-11-23 21:10:11 | sanity | INFO | Loaded config from: configs\main_cnn_template.yaml
+2025-11-23 21:10:11 | sanity | INFO | Config content:
+seed: 42
+dataset:
+  name: RAFDB
+  root: data/processed
+  splits_dir: data/splits
+  image_size: 128
+  channels: 1
+  train_split: train.csv
+  val_split: val.csv
+  test_split: test.csv
+preprocessing:
+  normalize:
+    mean:
+    - 0.5
+    std:
+    - 0.5
+  use_hist_equalization: false
+augmentation:
+  horizontal_flip: true
+  rotation_deg: 15
+  translate: 0.1
+  brightness: 0.2
+  contrast: 0.2
+  saturation: 0.0
+  hue: 0.0
+  random_erasing: true
+  random_erasing_p: 0.5
+  random_erasing_scale:
+  - 0.02
+  - 0.33
+  random_erasing_ratio:
+  - 0.3
+  - 3.3
+training:
+  batch_size: 64
+  num_epochs: 150
+  num_workers: 4
+  pin_memory: true
+  early_stopping_patience: 15
+optimizer:
+  name: adamw
+  lr: 0.001
+  weight_decay: 0.0001
+  momentum: 0.9
+scheduler:
+  name: cosine_annealing
+  T_max: 50
+  eta_min: 1.0e-05
+logging:
+  log_dir: experiments/logs
+  checkpoint_dir: experiments/checkpoints
+  save_best_metric: val_macro_f1
+  tensorboard: true
+
+2025-11-23 21:25:00 | sanity | INFO | Loaded config from: configs\main_cnn_template.yaml
+2025-11-23 21:25:00 | sanity | INFO | Config content:
+seed: 42
+dataset:
+  name: RAFDB
+  root: data/processed
+  splits_dir: data/splits
+  image_size: 128
+  channels: 1
+  train_split: train.csv
+  val_split: val.csv
+  test_split: test.csv
+preprocessing:
+  normalize:
+    mean:
+    - 0.5
+    std:
+    - 0.5
+  use_hist_equalization: false
+augmentation:
+  horizontal_flip: true
+  rotation_deg: 15
+  translate: 0.1
+  brightness: 0.2
+  contrast: 0.2
+  saturation: 0.0
+  hue: 0.0
+  random_erasing: true
+  random_erasing_p: 0.5
+  random_erasing_scale:
+  - 0.02
+  - 0.33
+  random_erasing_ratio:
+  - 0.3
+  - 3.3
+training:
+  batch_size: 64
+  num_epochs: 150
+  num_workers: 4
+  pin_memory: true
+  early_stopping_patience: 15
+optimizer:
+  name: adamw
+  lr: 0.001
+  weight_decay: 0.0001
+  momentum: 0.9
+scheduler:
+  name: cosine_annealing
+  T_max: 50
+  eta_min: 1.0e-05
+logging:
+  log_dir: experiments/logs
+  checkpoint_dir: experiments/checkpoints
+  save_best_metric: val_macro_f1
+  tensorboard: true
+
+2025-11-23 21:25:00 | sanity | INFO | Sanity check completed successfully.
+2025-11-23 21:55:30 | sanity | INFO | Loaded config
+2025-11-23 21:55:31 | sanity | INFO | Model:
+MainCNN(
+  (features): Sequential(
+    (0): ConvBlock(
+      (conv1): DepthwiseSeparableConv2d(
+        (depthwise): Conv2d(1, 1, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (pointwise): Conv2d(1, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      )
+      (bn1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act1): ELU(alpha=1.0, inplace=True)
+      (conv2): DepthwiseSeparableConv2d(
+        (depthwise): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32, bias=False)
+        (pointwise): Conv2d(32, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      )
+      (bn2): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): ELU(alpha=1.0, inplace=True)
+      (res_proj): Conv2d(1, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (pool): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+      (dropout): Dropout2d(p=0.25, inplace=False)
+    )
+    (1): ConvBlock(
+      (conv1): DepthwiseSeparableConv2d(
+        (depthwise): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32, bias=False)
+        (pointwise): Conv2d(32, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      )
+      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act1): ELU(alpha=1.0, inplace=True)
+      (conv2): DepthwiseSeparableConv2d(
+        (depthwise): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=64, bias=False)
+        (pointwise): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      )
+      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): ELU(alpha=1.0, inplace=True)
+      (res_proj): Conv2d(32, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (attention): SEBlock(
+        (avg_pool): AdaptiveAvgPool2d(output_size=1)
+        (fc): Sequential(
+          (0): Linear(in_features=64, out_features=4, bias=False)
+          (1): ReLU(inplace=True)
+          (2): Linear(in_features=4, out_features=64, bias=False)
+          (3): Sigmoid()
+        )
+      )
+      (pool): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+      (dropout): Dropout2d(p=0.25, inplace=False)
+    )
+    (2): ConvBlock(
+      (conv1): DepthwiseSeparableConv2d(
+        (depthwise): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=64, bias=False)
+        (pointwise): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      )
+      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act1): ELU(alpha=1.0, inplace=True)
+      (conv2): DepthwiseSeparableConv2d(
+        (depthwise): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=128, bias=False)
+        (pointwise): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      )
+      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): ELU(alpha=1.0, inplace=True)
+      (res_proj): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (attention): SEBlock(
+        (avg_pool): AdaptiveAvgPool2d(output_size=1)
+        (fc): Sequential(
+          (0): Linear(in_features=128, out_features=8, bias=False)
+          (1): ReLU(inplace=True)
+          (2): Linear(in_features=8, out_features=128, bias=False)
+          (3): Sigmoid()
+        )
+      )
+      (pool): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+      (dropout): Dropout2d(p=0.25, inplace=False)
+    )
+    (3): ConvBlock(
+      (conv1): DepthwiseSeparableConv2d(
+        (depthwise): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=128, bias=False)
+        (pointwise): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      )
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act1): ELU(alpha=1.0, inplace=True)
+      (conv2): DepthwiseSeparableConv2d(
+        (depthwise): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256, bias=False)
+        (pointwise): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      )
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): ELU(alpha=1.0, inplace=True)
+      (res_proj): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (attention): SEBlock(
+        (avg_pool): AdaptiveAvgPool2d(output_size=1)
+        (fc): Sequential(
+          (0): Linear(in_features=256, out_features=16, bias=False)
+          (1): ReLU(inplace=True)
+          (2): Linear(in_features=16, out_features=256, bias=False)
+          (3): Sigmoid()
+        )
+      )
+      (pool): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+      (dropout): Dropout2d(p=0.25, inplace=False)
+    )
+  )
+  (gap): AdaptiveAvgPool2d(output_size=1)
+  (classifier): Sequential(
+    (0): Flatten(start_dim=1, end_dim=-1)
+    (1): Linear(in_features=256, out_features=256, bias=True)
+    (2): ELU(alpha=1.0, inplace=True)
+    (3): Dropout(p=0.4, inplace=False)
+    (4): Linear(in_features=256, out_features=7, bias=True)
+  )
+)
+2025-11-23 21:55:44 | sanity | INFO | Batch images shape: (64, 1, 128, 128)
+2025-11-23 21:55:44 | sanity | INFO | Batch labels shape: (64,)
+2025-11-23 21:55:45 | sanity | INFO | Logits shape: (64, 7)

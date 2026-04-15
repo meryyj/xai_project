@@ -1,0 +1,17 @@
+2025-11-25 00:46:39,778 | root | INFO | Logging initialized. Writing to: experiments\evaluation\shallow_cnn\evaluate_all.log
+2025-11-25 00:46:39,779 | evaluate_all | INFO | ================================================================================
+2025-11-25 00:46:39,779 | evaluate_all | INFO | COMPLETE EVALUATION PIPELINE
+2025-11-25 00:46:39,779 | evaluate_all | INFO | ================================================================================
+2025-11-25 00:46:39,779 | evaluate_all | INFO | Config: configs/shallow_cnn.yaml
+2025-11-25 00:46:39,779 | evaluate_all | INFO | Checkpoint: experiments/checkpoints/shallow_best.pt
+2025-11-25 00:46:39,779 | evaluate_all | INFO | Output directory: experiments/evaluation/shallow_cnn
+2025-11-25 00:46:39,779 | evaluate_all | INFO | Split: test
+2025-11-25 00:46:39,779 | evaluate_all | INFO | ================================================================================
+
+2025-11-25 00:46:39,780 | evaluate_all | INFO | 
+================================================================================
+2025-11-25 00:46:39,780 | evaluate_all | INFO | Running: Model Evaluation
+2025-11-25 00:46:39,780 | evaluate_all | INFO | ================================================================================
+2025-11-25 00:46:39,780 | evaluate_all | INFO | Command: C:\Program Files\Python313\python.exe -m src.evaluation.evaluate --config configs/shallow_cnn.yaml --checkpoint experiments/checkpoints/shallow_best.pt --output_dir experiments\evaluation\shallow_cnn --split test
+
+2025-11-25 00:46:44,412 | evaluate_all | ERROR | ❌ Command failed with return code 1

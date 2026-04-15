@@ -1,0 +1,27 @@
+2025-11-25 11:30:59,355 | root | INFO | Logging initialized. Writing to: experiments\logs\dummy_baseline.log
+2025-11-25 11:30:59,355 | dummy_baseline | INFO | Loading config from: configs/main_cnn_template.yaml
+2025-11-25 11:30:59,359 | src.utils.seed | INFO | Setting global seed to 42
+2025-11-25 11:30:59,361 | src.utils.seed | INFO | PyTorch cuDNN set to deterministic mode
+2025-11-25 11:30:59,361 | dummy_baseline | INFO | Seed set to 42
+2025-11-25 11:31:00,328 | dummy_baseline | INFO | Computing majority class from training set...
+2025-11-25 11:31:25,402 | dummy_baseline | INFO | Class counts: {6: 3467, 1: 6292, 0: 4338, 2: 4254, 4: 3585, 3: 2801, 5: 383}
+2025-11-25 11:31:25,403 | dummy_baseline | INFO | Majority class index: 1
+2025-11-25 11:31:48,088 | dummy_baseline | INFO | [TRAIN] acc=0.2505, macroF1=0.0572
+2025-11-25 11:32:04,163 | dummy_baseline | INFO | [VAL] acc=0.2504, macroF1=0.0572
+2025-11-25 11:32:20,092 | dummy_baseline | INFO | [TEST] acc=0.2506, macroF1=0.0572
+2025-11-25 11:32:20,104 | dummy_baseline | INFO | Classification report on TEST set:
+              precision    recall  f1-score   support
+
+           0     0.0000    0.0000    0.0000       930
+           1     0.2506    1.0000    0.4007      1349
+           2     0.0000    0.0000    0.0000       912
+           3     0.0000    0.0000    0.0000       600
+           4     0.0000    0.0000    0.0000       768
+           5     0.0000    0.0000    0.0000        82
+           6     0.0000    0.0000    0.0000       743
+
+    accuracy                         0.2506      5384
+   macro avg     0.0358    0.1429    0.0572      5384
+weighted avg     0.0628    0.2506    0.1004      5384
+
+2025-11-25 11:32:20,104 | dummy_baseline | INFO | Dummy baseline evaluation complete.

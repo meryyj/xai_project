@@ -1,0 +1,8 @@
+2025-11-25 00:46:43,599 | root | INFO | Logging initialized. Writing to: experiments\evaluation\shallow_cnn\evaluate.log
+2025-11-25 00:46:43,599 | evaluate | INFO | Loading config from: configs/shallow_cnn.yaml
+2025-11-25 00:46:43,603 | src.utils.seed | INFO | Setting global seed to 42
+2025-11-25 00:46:43,606 | src.utils.seed | INFO | PyTorch cuDNN set to deterministic mode
+2025-11-25 00:46:43,606 | evaluate | INFO | Seed set to 42
+2025-11-25 00:46:43,606 | evaluate | INFO | Using device: cpu
+2025-11-25 00:46:43,606 | evaluate | INFO | Building model...
+2025-11-25 00:46:43,640 | evaluate | INFO | Using ShallowCNN for evaluation.

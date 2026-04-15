@@ -1,0 +1,10 @@
+2025-11-23 23:08:58,815 | root | INFO | Logging initialized. Writing to: experiments\logs\classical_baseline.log
+2025-11-23 23:08:58,816 | classical_baseline | INFO | Loading config from: configs/main_cnn_template.yaml
+2025-11-23 23:08:58,820 | src.utils.seed | INFO | Setting global seed to 42
+2025-11-23 23:08:58,824 | src.utils.seed | INFO | PyTorch cuDNN set to deterministic mode
+2025-11-23 23:08:58,824 | classical_baseline | INFO | Seed set to 42
+2025-11-23 23:09:00,271 | classical_baseline | INFO | Collecting features for train/val/test (this may take a bit)...
+2025-11-23 23:10:23,019 | classical_baseline | INFO | X_train shape: (25120, 16384), y_train shape: (25120,)
+2025-11-23 23:10:23,020 | classical_baseline | INFO | X_val shape:   (5383, 16384), y_val shape:   (5383,)
+2025-11-23 23:10:23,021 | classical_baseline | INFO | X_test shape:  (5384, 16384), y_test shape:  (5384,)
+2025-11-23 23:10:23,021 | classical_baseline | INFO | Fitting LogisticRegression baseline...

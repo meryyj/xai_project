@@ -1,0 +1,16 @@
+2025-11-25 00:01:33,367 | root | INFO | Logging initialized. Writing to: experiments\evaluation\main_cnn_20epochs\evaluate_all.log
+2025-11-25 00:01:33,367 | evaluate_all | INFO | ================================================================================
+2025-11-25 00:01:33,368 | evaluate_all | INFO | COMPLETE EVALUATION PIPELINE
+2025-11-25 00:01:33,368 | evaluate_all | INFO | ================================================================================
+2025-11-25 00:01:33,368 | evaluate_all | INFO | Config: configs/main_cnn_v1.yaml
+2025-11-25 00:01:33,368 | evaluate_all | INFO | Checkpoint: experiments/checkpoints/best_model_20epochs.pt
+2025-11-25 00:01:33,368 | evaluate_all | INFO | Output directory: experiments/evaluation/main_cnn_20epochs
+2025-11-25 00:01:33,368 | evaluate_all | INFO | Split: test
+2025-11-25 00:01:33,368 | evaluate_all | INFO | ================================================================================
+
+2025-11-25 00:01:33,369 | evaluate_all | INFO | 
+================================================================================
+2025-11-25 00:01:33,369 | evaluate_all | INFO | Running: Model Evaluation
+2025-11-25 00:01:33,369 | evaluate_all | INFO | ================================================================================
+2025-11-25 00:01:33,369 | evaluate_all | INFO | Command: C:\Program Files\Python313\python.exe -m src.evaluation.evaluate --config configs/main_cnn_v1.yaml --checkpoint experiments/checkpoints/best_model_20epochs.pt --output_dir experiments\evaluation\main_cnn_20epochs --split test
+

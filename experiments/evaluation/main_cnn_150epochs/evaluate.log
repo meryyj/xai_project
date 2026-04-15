@@ -1,0 +1,54 @@
+2025-11-25 02:02:12,193 | root | INFO | Logging initialized. Writing to: experiments\evaluation\main_cnn_150epochs\evaluate.log
+2025-11-25 02:02:12,193 | evaluate | INFO | Loading config from: configs/main_cnn_v1.yaml
+2025-11-25 02:02:12,202 | src.utils.seed | INFO | Setting global seed to 42
+2025-11-25 02:02:12,207 | src.utils.seed | INFO | PyTorch cuDNN set to deterministic mode
+2025-11-25 02:02:12,208 | evaluate | INFO | Seed set to 42
+2025-11-25 02:02:12,208 | evaluate | INFO | Using device: cpu
+2025-11-25 02:02:12,208 | evaluate | INFO | Building model...
+2025-11-25 02:02:12,227 | evaluate | INFO | Loading checkpoint from: experiments\checkpoints\best_model150epochs.pt
+2025-11-25 02:02:12,282 | evaluate | INFO | Model weights restored from epoch 135
+2025-11-25 02:02:12,283 | evaluate | INFO | Building dataloaders...
+2025-11-25 02:02:14,066 | evaluate | INFO | Evaluating on test set...
+2025-11-25 02:03:10,571 | evaluate | INFO | 
+======================================================================
+2025-11-25 02:03:10,571 | evaluate | INFO | TEST SET EVALUATION RESULTS
+2025-11-25 02:03:10,571 | evaluate | INFO | ======================================================================
+2025-11-25 02:03:10,571 | evaluate | INFO | 
+📊 Overall Metrics:
+2025-11-25 02:03:10,572 | evaluate | INFO |   Accuracy:          0.5511
+2025-11-25 02:03:10,572 | evaluate | INFO |   Balanced Accuracy: 0.5465
+2025-11-25 02:03:10,572 | evaluate | INFO |   Macro F1:          0.4911
+2025-11-25 02:03:10,572 | evaluate | INFO |   Weighted F1:       0.5337
+2025-11-25 02:03:10,572 | evaluate | INFO | 
+📈 Per-Class Metrics:
+2025-11-25 02:03:10,572 | evaluate | INFO | Emotion      Precision    Recall       F1-Score     Support   
+2025-11-25 02:03:10,572 | evaluate | INFO | ----------------------------------------------------------------------
+2025-11-25 02:03:10,573 | evaluate | INFO | neutral      0.5117       0.5409       0.5259       930       
+2025-11-25 02:03:10,573 | evaluate | INFO | happy        0.7329       0.8258       0.7766       1349      
+2025-11-25 02:03:10,573 | evaluate | INFO | sad          0.4472       0.3991       0.4218       912       
+2025-11-25 02:03:10,573 | evaluate | INFO | surprise     0.6463       0.7917       0.7116       600       
+2025-11-25 02:03:10,573 | evaluate | INFO | fear         0.4384       0.1576       0.2318       768       
+2025-11-25 02:03:10,573 | evaluate | INFO | disgust      0.2298       0.6585       0.3407       82        
+2025-11-25 02:03:10,573 | evaluate | INFO | anger        0.4093       0.4522       0.4297       743       
+2025-11-25 02:03:10,573 | evaluate | INFO | ======================================================================
+
+2025-11-25 02:03:10,579 | evaluate | INFO | 
+              precision    recall  f1-score   support
+
+     neutral     0.5117    0.5409    0.5259       930
+       happy     0.7329    0.8258    0.7766      1349
+         sad     0.4472    0.3991    0.4218       912
+    surprise     0.6463    0.7917    0.7116       600
+        fear     0.4384    0.1576    0.2318       768
+     disgust     0.2298    0.6585    0.3407        82
+       anger     0.4093    0.4522    0.4297       743
+
+    accuracy                         0.5511      5384
+   macro avg     0.4879    0.5465    0.4911      5384
+weighted avg     0.5423    0.5511    0.5337      5384
+
+2025-11-25 02:03:10,581 | evaluate | INFO | Saved classification report to: experiments\evaluation\main_cnn_150epochs\test_classification_report.txt
+2025-11-25 02:03:10,586 | evaluate | INFO | Saved overall metrics to: experiments\evaluation\main_cnn_150epochs\test_overall_metrics.csv
+2025-11-25 02:03:10,588 | evaluate | INFO | Saved per-class metrics to: experiments\evaluation\main_cnn_150epochs\test_per_class_metrics.csv
+2025-11-25 02:03:10,627 | evaluate | INFO | Saved predictions to: experiments\evaluation\main_cnn_150epochs\test_predictions.csv
+2025-11-25 02:03:10,627 | evaluate | INFO | ✅ Evaluation complete! Results saved to: experiments\evaluation\main_cnn_150epochs

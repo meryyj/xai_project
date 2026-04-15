@@ -1,0 +1,47 @@
+2025-11-25 02:02:04,224 | root | INFO | Logging initialized. Writing to: experiments\evaluation\main_cnn_150epochs\evaluate_all.log
+2025-11-25 02:02:04,225 | evaluate_all | INFO | ================================================================================
+2025-11-25 02:02:04,225 | evaluate_all | INFO | COMPLETE EVALUATION PIPELINE
+2025-11-25 02:02:04,225 | evaluate_all | INFO | ================================================================================
+2025-11-25 02:02:04,225 | evaluate_all | INFO | Config: configs/main_cnn_v1.yaml
+2025-11-25 02:02:04,225 | evaluate_all | INFO | Checkpoint: experiments/checkpoints/best_model150epochs.pt
+2025-11-25 02:02:04,225 | evaluate_all | INFO | Output directory: experiments/evaluation/main_cnn_150epochs
+2025-11-25 02:02:04,225 | evaluate_all | INFO | Split: test
+2025-11-25 02:02:04,225 | evaluate_all | INFO | ================================================================================
+
+2025-11-25 02:02:04,226 | evaluate_all | INFO | 
+================================================================================
+2025-11-25 02:02:04,226 | evaluate_all | INFO | Running: Model Evaluation
+2025-11-25 02:02:04,226 | evaluate_all | INFO | ================================================================================
+2025-11-25 02:02:04,226 | evaluate_all | INFO | Command: C:\Program Files\Python313\python.exe -m src.evaluation.evaluate --config configs/main_cnn_v1.yaml --checkpoint experiments/checkpoints/best_model150epochs.pt --output_dir experiments\evaluation\main_cnn_150epochs --split test
+
+2025-11-25 02:03:11,506 | evaluate_all | INFO | ✅ Model Evaluation completed successfully
+
+2025-11-25 02:03:11,507 | evaluate_all | INFO | 
+================================================================================
+2025-11-25 02:03:11,507 | evaluate_all | INFO | Running: Confusion Matrix Analysis
+2025-11-25 02:03:11,507 | evaluate_all | INFO | ================================================================================
+2025-11-25 02:03:11,507 | evaluate_all | INFO | Command: C:\Program Files\Python313\python.exe -m src.evaluation.confusion --predictions_csv experiments\evaluation\main_cnn_150epochs\test_predictions.csv --output_dir experiments\evaluation\main_cnn_150epochs\confusion --prefix test_confusion --top_k 10
+
+2025-11-25 02:03:11,549 | evaluate_all | INFO | ✅ Confusion Matrix Analysis completed successfully
+
+2025-11-25 02:03:11,549 | evaluate_all | INFO | 
+================================================================================
+2025-11-25 02:03:11,549 | evaluate_all | INFO | Running: Grad-CAM Visualization
+2025-11-25 02:03:11,549 | evaluate_all | INFO | ================================================================================
+2025-11-25 02:03:11,549 | evaluate_all | INFO | Command: C:\Program Files\Python313\python.exe -m src.evaluation.grad_cam --config configs/main_cnn_v1.yaml --checkpoint experiments/checkpoints/best_model150epochs.pt --predictions_csv experiments\evaluation\main_cnn_150epochs\test_predictions.csv --output_dir experiments\evaluation\main_cnn_150epochs\gradcam --samples_per_class 3 --split test
+
+2025-11-25 02:03:31,366 | evaluate_all | INFO | ✅ Grad-CAM Visualization completed successfully
+
+2025-11-25 02:03:31,366 | evaluate_all | INFO | 
+================================================================================
+2025-11-25 02:03:31,367 | evaluate_all | INFO | 🎉 EVALUATION PIPELINE COMPLETE!
+2025-11-25 02:03:31,367 | evaluate_all | INFO | ================================================================================
+2025-11-25 02:03:31,367 | evaluate_all | INFO | 
+All results saved to: experiments\evaluation\main_cnn_150epochs
+2025-11-25 02:03:31,367 | evaluate_all | INFO | 
+Generated outputs:
+2025-11-25 02:03:31,368 | evaluate_all | INFO |   📊 Metrics: experiments\evaluation\main_cnn_150epochs/test_overall_metrics.csv
+2025-11-25 02:03:31,368 | evaluate_all | INFO |   📈 Per-class: experiments\evaluation\main_cnn_150epochs/test_per_class_metrics.csv
+2025-11-25 02:03:31,368 | evaluate_all | INFO |   🔢 Predictions: experiments\evaluation\main_cnn_150epochs\test_predictions.csv
+2025-11-25 02:03:31,368 | evaluate_all | INFO |   📉 Confusion matrices: experiments\evaluation\main_cnn_150epochs\confusion/
+2025-11-25 02:03:31,368 | evaluate_all | INFO |   🔥 Grad-CAM visualizations: experiments\evaluation\main_cnn_150epochs\gradcam/

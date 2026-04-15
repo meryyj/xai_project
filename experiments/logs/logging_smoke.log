@@ -1,0 +1,2 @@
+2026-04-12 00:57:21,067 | root | INFO | Logging initialized. Writing to: experiments\logs\logging_smoke.log
+2026-04-12 00:57:21,067 | logging_smoke | INFO | logging smoke test
