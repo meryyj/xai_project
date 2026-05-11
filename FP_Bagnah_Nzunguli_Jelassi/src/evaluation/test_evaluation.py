@@ -42,7 +42,7 @@ def test_confusion_matrix():
     pairs_df = analyze_confusion_pairs(cm, ["class0", "class1", "class2"], top_k=5)
     print(f"\nConfused pairs:\n{pairs_df}")
     
-    print("✅ Confusion matrix test passed!")
+    print("Confusion matrix test passed!")
     return True
 
 
@@ -95,7 +95,7 @@ def test_gradcam():
     print(f"Overlayed image shape: {overlayed.shape}")
     print(f"Overlayed image dtype: {overlayed.dtype}")
     
-    print("✅ Grad-CAM test passed!")
+    print("Grad-CAM test passed!")
     return True
 
 
@@ -134,7 +134,7 @@ def test_metrics_computation():
     # Should be around 0.8 (80% correct)
     assert 0.75 < acc < 0.85, f"Accuracy {acc} not in expected range"
     
-    print("✅ Metrics computation test passed!")
+    print("Metrics computation test passed!")
     return True
 
 
@@ -157,7 +157,7 @@ def test_class_weights():
     # Classes with fewer samples should have higher weights
     assert weights[2] > weights[1], "Minority class should have higher weight"
     
-    print("✅ Class weights test passed!")
+    print("Class weights test passed!")
     return True
 
 
@@ -202,7 +202,7 @@ def test_evaluation_pipeline():
         
         print(f"✓ Results saved successfully to {tmpdir}")
     
-    print("✅ Evaluation pipeline test passed!")
+    print("Evaluation pipeline test passed!")
     return True
 
 
@@ -226,7 +226,7 @@ def run_all_tests():
             success = test_func()
             results.append((name, success))
         except Exception as e:
-            print(f"\n❌ Test '{name}' FAILED with error:")
+            print(f"\nTest '{name}' FAILED with error:")
             print(f"   {type(e).__name__}: {e}")
             results.append((name, False))
     
@@ -236,7 +236,7 @@ def run_all_tests():
     print("="*70)
     
     for name, success in results:
-        status = "✅ PASSED" if success else "❌ FAILED"
+        status = "PASSED" if success else "FAILED"
         print(f"{name:<30} {status}")
     
     n_passed = sum(1 for _, s in results if s)
@@ -245,10 +245,10 @@ def run_all_tests():
     print(f"\nTotal: {n_passed}/{n_total} tests passed")
     
     if n_passed == n_total:
-        print("\n🎉 ALL TESTS PASSED!")
+        print("\nALL TESTS PASSED!")
         return True
     else:
-        print(f"\n⚠️  {n_total - n_passed} test(s) failed")
+        print(f"\n{n_total - n_passed} test(s) failed")
         return False
 
 

@@ -144,13 +144,13 @@ def print_evaluation_summary(results: Dict[str, Any], split_name: str = "Test") 
     logger.info(f"{split_name.upper()} SET EVALUATION RESULTS")
     logger.info(f"{'=' * 70}")
     
-    logger.info(f"\n📊 Overall Metrics:")
+    logger.info(f"\nOverall Metrics:")
     logger.info(f"  Accuracy:          {results['accuracy']:.4f}")
     logger.info(f"  Balanced Accuracy: {results['balanced_accuracy']:.4f}")
     logger.info(f"  Macro F1:          {results['macro_f1']:.4f}")
     logger.info(f"  Weighted F1:       {results['weighted_f1']:.4f}")
     
-    logger.info(f"\n📈 Per-Class Metrics:")
+    logger.info(f"\nPer-Class Metrics:")
     logger.info(f"{'Emotion':<12} {'Precision':<12} {'Recall':<12} {'F1-Score':<12} {'Support':<10}")
     logger.info("-" * 70)
     
@@ -372,7 +372,7 @@ def main():
     # Save results
     save_results_to_csv(results, output_dir, split_name=args.split)
     
-    logger.info(f"✅ Evaluation complete! Results saved to: {output_dir}")
+    logger.info(f"Evaluation complete! Results saved to: {output_dir}")
 
 
 if __name__ == "__main__":

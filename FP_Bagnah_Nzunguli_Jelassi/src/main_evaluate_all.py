@@ -31,10 +31,10 @@ def run_command(cmd: list[str], description: str) -> None:
     result = subprocess.run(cmd, capture_output=False, text=True)
     
     if result.returncode != 0:
-        logger.error(f"❌ Command failed with return code {result.returncode}")
+        logger.error(f"Command failed with return code {result.returncode}")
         sys.exit(1)
     else:
-        logger.info(f"✅ {description} completed successfully\n")
+        logger.info(f"{description} completed successfully\n")
 
 
 def main():
@@ -148,23 +148,23 @@ def main():
         
         run_command(gradcam_cmd, "Grad-CAM Visualization")
     else:
-        logger.info("⏭️  Skipping Grad-CAM generation (--skip_gradcam flag set)\n")
+        logger.info("Skipping Grad-CAM generation (--skip_gradcam flag set)\n")
     
     # -------------------------------------------------------------------------
     # Summary
     # -------------------------------------------------------------------------
     logger.info("\n" + "="*80)
-    logger.info("🎉 EVALUATION PIPELINE COMPLETE!")
+    logger.info("EVALUATION PIPELINE COMPLETE!")
     logger.info("="*80)
     logger.info(f"\nAll results saved to: {output_dir}")
     logger.info("\nGenerated outputs:")
-    logger.info(f"  📊 Metrics: {output_dir}/{args.split}_overall_metrics.csv")
-    logger.info(f"  📈 Per-class: {output_dir}/{args.split}_per_class_metrics.csv")
-    logger.info(f"  🔢 Predictions: {predictions_csv}")
-    logger.info(f"  📉 Confusion matrices: {confusion_dir}/")
-    
+    logger.info(f"  Metrics: {output_dir}/{args.split}_overall_metrics.csv")
+    logger.info(f"  Per-class: {output_dir}/{args.split}_per_class_metrics.csv")
+    logger.info(f"  Predictions: {predictions_csv}")
+    logger.info(f"  Confusion matrices: {confusion_dir}/")
+
     if not args.skip_gradcam:
-        logger.info(f"  🔥 Grad-CAM visualizations: {gradcam_dir}/")
+        logger.info(f"  Grad-CAM visualizations: {gradcam_dir}/")
     
 
 if __name__ == "__main__":

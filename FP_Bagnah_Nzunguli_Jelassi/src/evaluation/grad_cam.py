@@ -227,7 +227,7 @@ def visualize_sample_with_gradcam(
     axes[2].imshow(overlayed)
     
     # Add prediction info
-    correct = "✓" if true_label == pred_label else "✗"
+    correct = "[OK]" if true_label == pred_label else "[X]"
     color = "green" if true_label == pred_label else "red"
     
     title = (
@@ -341,7 +341,7 @@ def create_gradcam_gallery(
         
         logger.info(f"  Generated {n_samples} visualizations for {emotion}")
     
-    logger.info(f"✅ Grad-CAM gallery complete! Saved to: {output_dir}")
+    logger.info(f"Grad-CAM gallery complete! Saved to: {output_dir}")
 
 
 def analyze_attention_regions(
@@ -505,7 +505,7 @@ def main():
         incorrect_only=True,
     )
     
-    logger.info(f"\n✅ All Grad-CAM visualizations complete! Saved to: {output_dir}")
+    logger.info(f"\nAll Grad-CAM visualizations complete! Saved to: {output_dir}")
 
 
 if __name__ == "__main__":
