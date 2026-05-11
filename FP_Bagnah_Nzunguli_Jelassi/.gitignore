@@ -1,0 +1,19 @@
+/data/processed
+/.venv
+/dataset
+
+# Python caches
+__pycache__/
+*.py[cod]
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.synctex.gz
+
+/experiments
+/presentation

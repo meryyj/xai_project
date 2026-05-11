@@ -1,0 +1,16 @@
+numpy
+pandas
+scikit-learn
+scikit-image
+shap
+
+torch
+torchvision
+Pillow
+matplotlib
+opencv-python
+
+tensorboard
+pyyaml
+
+mediapipe
